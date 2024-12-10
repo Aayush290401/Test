@@ -102,30 +102,26 @@ jobs:
     workflow: 
     # Wanted status or conclusion to search for in recent runs
 
-https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#list-workflow-runs
-
-    workflow_conclusion: # optional, default is success
-    # Repository name with owner (like actions/checkout)
-    repo: # optional, default is ${{github.repository}}
-    # Pull request number
-    pr: # optional
-    # Commit hash
-    commit: # optional
-    # Branch name
-    branch: # optional
-    # Event type
-    event: # optional
-    # Workflow run id
-    run_id: # optional
-    # Workflow run number
-    run_number: # optional
-    # Artifact name (download all artifacts if not specified)
-    name: # optional
-    # Where to unpack the artifact
-    path: # optional, default is ./artifacts
-    # Check workflow run whether it has an artifact
-    check_artifacts: # optional
-    # Search workflow runs for artifact with specified name
-    search_artifacts: # optional
-          
-        
+workflow_conclusion: # optional, default is success
+# Repository name with owner (like actions/checkout)
+repo: '' # optional, default is ${{github.repository}}
+# Pull request number
+pr: '' # optional
+# Commit hash
+commit: '' # optional
+# Branch name
+branch: '' # optional
+# Event type
+event: '' # optional
+# Workflow run id
+run_id: '' # optional
+# Workflow run number
+run_number: '' # optional
+# Artifact name (download all artifacts if not specified)
+name: '' # optional
+# Where to unpack the artifact
+path: './artifacts' # optional, default is ./artifacts
+# Check workflow run whether it has an artifact
+check_artifacts: false # optional
+# Search workflow runs for artifact with specified name
+search_artifacts: false # optional
