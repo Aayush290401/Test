@@ -73,21 +73,8 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-      - name: Safe download workflow artifact
-        uses: Legit-Labs/action-download-artifact@v2.18.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Optional, defaults to ${{ github.token }}
-          workflow: <YOUR_WORKFLOW_NAME> # Specify the workflow name to download from
-          # Optional fields
-          workflow_conclusion: success # Default is success
-          repo: ${{ github.repository }} # Repository name with owner (like actions/checkout)
-          pr: '' # Optional, pull request number
-          commit: '' # Optional, commit hash
-          branch: '' # Optional, branch name
-          event: '' # Optional, event type
-          run_id: '' # Optional, workflow run id
-          run_number: '' # Optional, workflow run number
-          name: '' # Optional, artifact name
-          path: './artifacts' # Optional, where to unpack the artifact
-          check_artifacts: false # Optional, check if there are artifacts
-          search_artifacts: false # Optional, search for artifacts with specified name
+     - task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    artifactName: 'drop'
+    publishLocation: 'Container'
