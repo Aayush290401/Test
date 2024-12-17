@@ -21,19 +21,18 @@ on:
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
+    name: Analyze ${{ matrix.language }}
     # Runner size impacts CodeQL analysis time. To learn more, please see:
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
     #   - https://gh.io/supported-runners-and-hardware-resources
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.language == 'swift' && 'macos-latest' || 'ubuntu-latest' }}
     permissions:
       # Required for all workflows
       security-events: write
       packages: read  # Required to fetch internal or private CodeQL packs
       actions: read   # Only required for workflows in private repositories
       contents: read   # Required to access contents
-
     strategy:
       fail-fast: false
       matrix:
