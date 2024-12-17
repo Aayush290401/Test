@@ -1,14 +1,3 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.d
-#
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
-#
-# ******** NOTE ********
-# We have attempted to detect the languages in your repository. Please check
-# the `language` matrix defined below to confirm you have the correct set of
-# supported CodeQL languages.
-
 name: "CodeQL Advanced"
 
 on:
@@ -70,10 +59,10 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:${{matrix.language}}"
+          category: "/language:${{ matrix.language }}"
 
-     - task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    artifactName: 'drop'
-    publishLocation: 'Container'
+      - name: Publish Build Artifacts
+        uses: actions/upload-artifact@v2  # Use the correct action for uploading artifacts
+        with:
+          name: drop
+          path: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
