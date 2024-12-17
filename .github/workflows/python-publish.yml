@@ -1,60 +1,54 @@
-# This workflow will upload a Python Package to PyPI when a release is created
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
-
-name: Upload Python Package
+name: "CodeQL Advanced"
 
 on:
-  release:
-    types: [published]
-
-permissions:
-  contents: read
-  id-token: write  # For trusted publishing
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '16 8 * * 2'
 
 jobs:
-  release-build:
-    runs-on: ubuntu-latest
+  analyze:
+    name: Analyze ${{ matrix.language }}
+    runs-on: ${{ matrix.language == 'swift' && 'macos-latest' || 'ubuntu-latest' }}
+    permissions:
+      security-events: write
+      packages: read  
+      actions: read  
+      contents: read   
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: python
+            build-mode: none
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
         with:
-          python-version: "3.x"
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
 
-      - name: Upgrade pip and build package
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install build
-          python -m build
-
-      - name: Upload distributions
-        uses: actions/upload-artifact@v4
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
         with:
-          name: release-dists
-          path: dist/
+          category: "/language:${{ matrix.language }}"
 
-  pypi-publish:
-    runs-on: ubuntu-latest
-    needs: release-build
-    permissions:
-      id-token: write  # Important for trusted publishing
+      # Create a directory for artifacts if it doesn't exist
+      - name: Create Artifact Directory
+        run: mkdir -p artifacts
 
-    environment:
-      name: pypi
-      # Optional URL for deployment status
-      # url: https://pypi.org/p/YOURPROJECT
+      # Example command to create a zip file; adjust as needed
+      - name: Zip Artifacts
+        run: zip -r artifacts/codeql-results.zip path/to/your/results/*  # Change this to your actual results path
 
-    steps:
-      - name: Retrieve release distributions
-        uses: actions/download-artifact@v4
+      - name: Publish Build Artifacts
+        uses: actions/upload-artifact@v2
         with:
-          name: release-dists
-          path: dist/
-
-      - name: Publish release distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: dist/
+          name: codeql-results
+          path: artifacts/codeql-results.zip
