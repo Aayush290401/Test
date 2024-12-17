@@ -39,16 +39,16 @@ jobs:
         with:
           category: "/language:${{ matrix.language }}"
 
-      # Create a directory for artifacts if it doesn't exist
+      # Create the artifact directory
       - name: Create Artifact Directory
         run: mkdir -p artifacts
 
-      # Example command to create a zip file; adjust as needed
-      - name: Zip Artifacts
-        run: zip -r artifacts/codeql-results.zip path/to/your/results/*  # Change this to your actual results path
+      # Create a dummy artifact for demonstration
+      - name: Create Dummy Artifact
+        run: echo "CodeQL analysis results would go here." > artifacts/codeql-results.txt
 
       - name: Publish Build Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: codeql-results
-          path: artifacts/codeql-results.zip
+          path: artifacts/codeql-results.txt
