@@ -1,4 +1,4 @@
-name: Publish Tic Tac Toe
+name: Build and Publish Tic Tac Toe
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # Change to Windows
 
     steps:
       - name: Checkout code
@@ -28,16 +28,8 @@ jobs:
         run: |
           pyinstaller --onefile "Tic Tac Toe.py"
 
-      - name: Upload executable
-        uses: actions/upload-artifact@v2
+      - name: Publish Build Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: Tic Tac Toe
-          path: dist/"Tic Tac Toe"
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag: ${{ github.event.release.tag }}
-          files: dist/"Tic Tac Toe"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: TicTacToeExecutable
+          path: dist/"Tic Tac Toe.exe"  # Ensure the correct path for Windows
