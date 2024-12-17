@@ -49,7 +49,7 @@ jobs:
         with:
           category: "/language:${{ matrix.language }}"
 
-      # Create the artifact directory if not exists
+      # Create the artifact directory if it doesn't exist
       - name: Create Artifact Directory
         run: mkdir -p artifacts
 
@@ -58,7 +58,7 @@ jobs:
         run: echo "CodeQL analysis results would go here." > artifacts/codeql-results.txt
 
       - name: Publish Build Artifacts
-        uses: actions/upload-artifact@v2  # Correct action version
+        uses: actions/upload-artifact@v4  # Updated to v4
         with:
           name: drop
-          path: artifacts/codeql-results.txt  # Path to the artifact to upload
+          path: artifacts/codeql-results.txt  # Ensure this path is correct
